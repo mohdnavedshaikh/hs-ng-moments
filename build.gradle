@@ -1,0 +1,45 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.3.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'org.springframework.boot'
+
+jar {
+    baseName = 'hs-moments'
+    version =  '1.0.0'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile(
+             'org.springframework.boot:spring-boot-starter-web:1.4.3.RELEASE',
+             'org.elasticsearch:elasticsearch:5.1.1',
+             'org.elasticsearch.client:transport:5.1.1',
+             'org.elasticsearch.plugin:transport-netty4-client:5.1.1',
+             'com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.6.2',
+             'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.2',
+             'mysql:mysql-connector-java:5.1.32',
+             'org.springframework:spring-context-support:4.1.4.RELEASE',
+             'org.springframework:spring-jdbc:4.1.4.RELEASE',
+             'org.springframework:spring-orm:4.1.4.RELEASE',
+             'javax.validation:validation-api:1.1.0.Final',
+             'org.hibernate:hibernate-validator:5.1.0.Final'
+          )     
+           
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+}
