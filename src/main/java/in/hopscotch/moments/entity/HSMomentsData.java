@@ -5,16 +5,19 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "hs_moments_data", schema = "HSMOMENTS")
+@Table(name = "hs_moments_data", schema = "hsmoments")
 public class HSMomentsData implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -45,7 +48,7 @@ public class HSMomentsData implements Serializable {
     private Integer customerId;
 
     // contains first name + last name of user
-    @Column(name = "customer_name", length = 300)
+    @Column(name = "customer_name", length = 100)
     private String customerName;
 
     @Column(name = "created_date")

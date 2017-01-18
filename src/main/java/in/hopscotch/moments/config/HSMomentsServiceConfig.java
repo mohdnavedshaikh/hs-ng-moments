@@ -2,6 +2,7 @@ package in.hopscotch.moments.config;
 
 import java.beans.PropertyVetoException;
 
+import javax.inject.Inject;
 import javax.sql.DataSource;
 
 import org.hibernate.dialect.MySQL5Dialect;
@@ -15,6 +16,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -40,7 +42,7 @@ public class HSMomentsServiceConfig {
 
     private static final String PACKAGE_IN_HOPSCOTCH_MOMENTS = "in.hopscotch.moments";
 
-    @Autowired
+    @Inject
     Environment env;
 
     @Bean(destroyMethod = "close")
@@ -68,6 +70,7 @@ public class HSMomentsServiceConfig {
         vendorAdapter.setDatabasePlatform(MySQL5Dialect.class.getName());
         vendorAdapter.setShowSql(false);
         vendorAdapter.setGenerateDdl(false);
+        vendorAdapter.setDatabase(Database.MYSQL);
         factoryBean.setJpaVendorAdapter(vendorAdapter);
         return factoryBean;
     }
