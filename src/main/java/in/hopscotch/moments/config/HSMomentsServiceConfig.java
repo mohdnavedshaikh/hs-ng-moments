@@ -6,21 +6,25 @@ import javax.inject.Inject;
 import javax.sql.DataSource;
 
 import org.hibernate.dialect.MySQL5Dialect;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.env.Environment;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -30,17 +34,17 @@ import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
+import in.hopscotch.moments.api.cookie.CookieContext;
+import in.hopscotch.moments.api.interceptor.CookieInterceptor;
 import in.hopscotch.moments.config.helper.RESTErrorControllerAdvice;
 import in.hopscotch.moments.db.util.JDBCAccess;
 import in.hopscotch.moments.db.util.JPAAccess;
 
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
-@PropertySources({
-    @PropertySource("classpath:application.properties"),
-    @PropertySource("classpath:site-jdbc.properties")
-})
-public class HSMomentsServiceConfig {
+@PropertySources({ @PropertySource("classpath:application.properties"), @PropertySource("classpath:site-jdbc.properties") })
+@EnableWebMvc
+public class HSMomentsServiceConfig extends WebMvcConfigurerAdapter {
 
     private static final String PACKAGE_IN_HOPSCOTCH_MOMENTS = "in.hopscotch.moments";
 
@@ -61,7 +65,7 @@ public class HSMomentsServiceConfig {
         dataSource.setConnectionCustomizerClassName("in.hopscotch.moments.config.helper.IsolationLevelReadCommittedConnectionCustomizer");
         return dataSource;
     }
-    
+
     @Bean
     public JDBCAccess jdbcAccess() throws PropertyVetoException {
         JDBCAccess jdbcAccess = new JDBCAccess();
@@ -113,6 +117,22 @@ public class HSMomentsServiceConfig {
     @Bean
     public JPAAccess jpaAccess() {
         return new JPAAccess();
+    }
+
+    @Bean
+    public CookieInterceptor cookieInterceptor() {
+        return new CookieInterceptor();
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(cookieInterceptor());
+    }
+
+    @Bean
+    @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+    CookieContext cookieContext() {
+        return new CookieContext();
     }
 
 }

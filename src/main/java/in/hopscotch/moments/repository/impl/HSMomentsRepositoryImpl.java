@@ -11,32 +11,26 @@ import org.springframework.stereotype.Repository;
 
 import in.hopscotch.moments.api.response.ChildInfo;
 import in.hopscotch.moments.api.response.DeliveredProducts;
+import in.hopscotch.moments.constant.NamedQueryConstant;
 import in.hopscotch.moments.db.util.JDBCAccess;
 import in.hopscotch.moments.entity.HSMomentsData;
 import in.hopscotch.moments.repository.HSMomentsRepository;
 
 @Repository
 public class HSMomentsRepositoryImpl extends AbstractRepository<HSMomentsData> implements HSMomentsRepository {
-    
+
     @Inject
     JDBCAccess jdbcAccess;
 
-    public static final String DELIVERED_PRODUCTS = "select pi.sku as sku, p.id as id, p.product_name as name, p.image_id as image from orders.order o " 
-        + " inner join orders.orderitem oi on oi.order_id=o.id "
-        + " inner join products.productitem pi on pi.sku=oi.sku " 
-        + " inner join products.product p on p.id=pi.product_id "
+    public static final String DELIVERED_PRODUCTS = "select pi.sku as sku, p.id as id, p.product_name as name, p.image_id as image from orders.order o "
+        + " inner join orders.orderitem oi on oi.order_id=o.id " + " inner join products.productitem pi on pi.sku=oi.sku " + " inner join products.product p on p.id=pi.product_id "
         + " where o.customer_id=? and o.order_status_id=6 group by sku order by o.id desc";
-    
+
     public static final String CHILD_INFO = "SELECT id, name, customer_id FROM customers.youngestchildageandgendercollect where customer_id=?";
-    
+
     @Override
     public List<HSMomentsData> getHSMomentsData(boolean newest, int pageNo, int pageSize) {
-        String query = "";
-        if (newest)
-            query = "From HSMomentsData order by updatedDate DESC";
-        else
-            query = "From HSMomentsData order by likes DESC";
-        List<HSMomentsData> hsMomentsResponse = findByPagination(query, pageNo - 1, pageSize);
+        List<HSMomentsData> hsMomentsResponse = findByPaginationUsingNamedQuery(newest ? NamedQueryConstant.HSMOMENTSDATA_NEWEST : NamedQueryConstant.HSMOMENTSDATA_POPULAR, pageNo - 1, pageSize);
         return hsMomentsResponse;
     }
 
@@ -70,7 +64,9 @@ public class HSMomentsRepositoryImpl extends AbstractRepository<HSMomentsData> i
         }, customerId);
         return childInfos;
     }
-    
-    
+
+    public void incrementLike(Long momentsPhotoId) {
+        executeUpdateUsingNamedQuery(NamedQueryConstant.HSMOMENTSDATA_INCREMENT_LIKES);
+    }
 
 }

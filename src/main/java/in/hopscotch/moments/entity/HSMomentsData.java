@@ -8,10 +8,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "hs_moments_data", schema = "hsmoments")
+import in.hopscotch.moments.constant.NamedQueryConstant;
+
+@Entity(name = "HSMomentsData")
+@Table(name = "hsmoments.hs_moments_data")
+@NamedQueries({ @NamedQuery(name = NamedQueryConstant.HSMOMENTSDATA_NEWEST, query = "select hsmomentdata From HSMomentsData hsmomentdata order by hsmomentdata.updatedDate DESC"),
+        @NamedQuery(name = NamedQueryConstant.HSMOMENTSDATA_POPULAR, query = "select hsmomentdata From HSMomentsData hsmomentdata order by hsmomentdata.likes DESC") })
+@NamedNativeQueries({ @NamedNativeQuery(name = NamedQueryConstant.HSMOMENTSDATA_INCREMENT_LIKES, query = "Update hsmoments.hs_moments_data SET likes = likes + 1") })
 public class HSMomentsData implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,7 +38,7 @@ public class HSMomentsData implements Serializable {
 
     @Column(name = "likes")
     private int likes;
-    
+
     @Column(name = "title", length = 20)
     private String title;
 

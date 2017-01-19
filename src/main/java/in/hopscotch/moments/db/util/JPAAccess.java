@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
+import org.springframework.util.CollectionUtils;
+
 public class JPAAccess {
 
     private EntityManager entityManager;
@@ -39,6 +41,23 @@ public class JPAAccess {
     public <T> List<T> findByPagination(String query, int pageNo, int pageSize, Class<T> entityClass) {
         List<T> results = entityManager.createQuery(query, entityClass).setFirstResult(pageNo * pageSize).setMaxResults(pageSize).getResultList();
         return results;
+    }
+
+    public <T> List<T> findByPaginationUsingNamedQuery(String nameOfQuery, int pageNo, int pageSize, Class<T> entityClass) {
+        List<T> results = entityManager.createNamedQuery(nameOfQuery, entityClass).setFirstResult(pageNo * pageSize).setMaxResults(pageSize).getResultList();
+        return results;
+    }
+
+    public void executeUpdateUsingNamedQuery(String nameOfQuery) {
+        entityManager.createNamedQuery(nameOfQuery);
+    }
+
+    public <T> T findOneUsingNamedQuery(String nameOfquery, Class<T> entityClass) {
+        List<T> results = entityManager.createNamedQuery(nameOfquery, entityClass).getResultList();
+
+        if (CollectionUtils.isEmpty(results))
+            return null;
+        return results.get(0);
     }
 
     public void flush() {

@@ -7,11 +7,13 @@ import in.hopscotch.moments.api.response.DeliveredProducts;
 import in.hopscotch.moments.entity.HSMomentsData;
 
 public interface HSMomentsRepository {
-    
+
     public List<HSMomentsData> getHSMomentsData(boolean newest, int pageNo, int pageSize);
-    
+
     public List<DeliveredProducts> getDeliveredProductInfo(Integer customerId);
-    
+
     public List<ChildInfo> getChildInfo(Integer customerId);
+
+    void incrementLike(Long momentsPhotoId);
 
 }

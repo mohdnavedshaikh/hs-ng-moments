@@ -53,6 +53,19 @@ public abstract class AbstractRepository<T> {
         return result;
     }
 
+    public List<T> findByPaginationUsingNamedQuery(String nameOfQuery, int pageNo, int pageSize) {
+        List<T> result = jpaAccess.findByPaginationUsingNamedQuery(nameOfQuery, pageNo, pageSize, entityClass);
+        return result;
+    }
+
+    public T findOneUsingNamedQuery(String nameOfquery) {
+        return jpaAccess.findOneUsingNamedQuery(nameOfquery, entityClass);
+    }
+
+    public void executeUpdateUsingNamedQuery(String nameOfQuery) {
+        jpaAccess.executeUpdateUsingNamedQuery(nameOfQuery);
+    }
+
     public <T> void bulkUpdate(T[] entities) {
         jpaAccess.bulkUpdate(entities);
     }
