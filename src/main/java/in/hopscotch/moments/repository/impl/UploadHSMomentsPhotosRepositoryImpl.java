@@ -6,7 +6,7 @@ import in.hopscotch.moments.entity.HSMomentsData;
 import in.hopscotch.moments.repository.UploadHSMomentsPhotosRepository;
 
 @Repository
-public class UploadHSMomentsPhotosRepositoryImpl extends AbstractRepository implements UploadHSMomentsPhotosRepository {
+public class UploadHSMomentsPhotosRepositoryImpl extends AbstractRepository<HSMomentsData> implements UploadHSMomentsPhotosRepository {
 
     @Override
     public void uploadMomentData(HSMomentsData hsMomentsData) {

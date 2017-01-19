@@ -29,6 +29,9 @@ public class HSMomentsData implements Serializable {
 
     @Column(name = "likes")
     private int likes;
+    
+    @Column(name = "title", length = 20)
+    private String title;
 
     @Column(name = "description", length = 500)
     private String description;
@@ -87,6 +90,14 @@ public class HSMomentsData implements Serializable {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
