@@ -2,21 +2,21 @@ package in.hopscotch.moments.api.response;
 
 import java.io.Serializable;
 
-public class ContestWinnnerInfo implements Serializable {
+public class ContestWinnerInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String contestTitle;
-    
+
     private String contestDescription;
-    
+
     private String customerName;
-    
+
     private String KidName;
-    
+
     private String imageURL;
-    
-    private String description;
+
+    private String hsMomentDataDescription;
 
     public String getContestTitle() {
         return contestTitle;
@@ -58,12 +58,12 @@ public class ContestWinnnerInfo implements Serializable {
         this.imageURL = imageURL;
     }
 
-    public String getDescription() {
-        return description;
+    public String getHsMomentDataDescription() {
+        return hsMomentDataDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setHsMomentDataDescription(String hsMomentDataDescription) {
+        this.hsMomentDataDescription = hsMomentDataDescription;
     }
-    
+
 }

@@ -7,26 +7,21 @@ public class HSMomentsResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private ContestWinnnerInfo contestWinnerInfo;
-    
-    
+    private ContestWinnerInfo contestWinnerInfo;
+
     private List<MomentsPhoto> momentsPhotos;
 
-
-    public ContestWinnnerInfo getContestWinnerInfo() {
+    public ContestWinnerInfo getContestWinnerInfo() {
         return contestWinnerInfo;
     }
 
-
-    public void setContestWinnerInfo(ContestWinnnerInfo contestWinnerInfo) {
+    public void setContestWinnerInfo(ContestWinnerInfo contestWinnerInfo) {
         this.contestWinnerInfo = contestWinnerInfo;
     }
-
 
     public List<MomentsPhoto> getMomentsPhotos() {
         return momentsPhotos;
     }
-
 
     public void setMomentsPhotos(List<MomentsPhoto> momentsPhotos) {
         this.momentsPhotos = momentsPhotos;

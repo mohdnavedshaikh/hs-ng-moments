@@ -4,10 +4,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.stereotype.Service;
+
 import in.hopscotch.moments.entity.HSMomentsData;
 import in.hopscotch.moments.repository.HSMomentsRepository;
 import in.hopscotch.moments.service.HSMomentsService;
 
+@Service
 public class HSMomentsServiceImpl implements HSMomentsService {
 
     @Inject
@@ -16,6 +19,11 @@ public class HSMomentsServiceImpl implements HSMomentsService {
     @Override
     public List<HSMomentsData> getHSMomentsData(boolean newest, int pageNo, int pageSize) {
         return hsMomentsRepository.getHSMomentsData(newest, pageNo, pageSize);
+    }
+
+    @Override
+    public void incrementLike(Long momentsPhotoId) {
+        hsMomentsRepository.incrementLike(momentsPhotoId);
     }
 
 }

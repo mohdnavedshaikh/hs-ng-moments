@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import in.hopscotch.moments.constant.NamedQueryConstant;
 import in.hopscotch.moments.entity.HSMomentsData;
 import in.hopscotch.moments.repository.HSMomentsRepository;
 
@@ -12,13 +13,13 @@ public class HSMomentsRepositoryImpl extends AbstractRepository<HSMomentsData> i
 
     @Override
     public List<HSMomentsData> getHSMomentsData(boolean newest, int pageNo, int pageSize) {
-        String query = "";
-        if (newest)
-            query = "From HSMomentsData order by updatedDate DESC";
-        else
-            query = "From HSMomentsData order by likes DESC";
-        List<HSMomentsData> hsMomentsResponse = findByPagination(query, pageNo - 1, pageSize);
+        List<HSMomentsData> hsMomentsResponse = findByPaginationUsingNamedQuery(newest ? NamedQueryConstant.HSMOMENTSDATA_NEWEST : NamedQueryConstant.HSMOMENTSDATA_POPULAR, pageNo - 1, pageSize);
         return hsMomentsResponse;
+    }
+
+    @Override
+    public void incrementLike(Long momentsPhotoId) {
+        executeUpdateUsingNamedQuery(NamedQueryConstant.HSMOMENTSDATA_INCREMENT_LIKES);
     }
 
 }
