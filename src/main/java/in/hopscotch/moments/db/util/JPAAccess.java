@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
 public class JPAAccess {
@@ -32,16 +31,37 @@ public class JPAAccess {
         return entityManager.createQuery(query).getResultList();
     }
 
-    public <T> List<T> find(String query) {
-        return entityManager.createQuery(query).getResultList();
+    public <T> List<T> find(String query, Class<T> entityClass) {
+        List<T> results = entityManager.createQuery(query, entityClass).getResultList();
+        return results;
+    }
+
+    public <T> List<T> findByPagination(String query, int pageNo, int pageSize, Class<T> entityClass) {
+        List<T> results = entityManager.createQuery(query, entityClass).setFirstResult(pageNo * pageSize).setMaxResults(pageSize).getResultList();
+        return results;
     }
 
     public void flush() {
         entityManager.flush();
     }
 
-    public CriteriaBuilder criteriaBuilder() {
-        return entityManager.getCriteriaBuilder();
+    public <T> void bulkUpdate(T[] entities) {
+        int batchSize = 50;
+        boolean remaining = false;
+        for (int i = 0; i < entities.length; i++) {
+            entityManager.merge(entities[i]);
+            remaining = true;
+            if (i % batchSize == 0) {
+                entityManager.flush();
+                entityManager.clear();
+                remaining = false;
+            }
+        }
+
+        if (remaining) {
+            entityManager.flush();
+            entityManager.clear();
+        }
     }
 
     @PersistenceContext

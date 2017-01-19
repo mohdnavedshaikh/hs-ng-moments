@@ -14,6 +14,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
@@ -30,6 +31,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import in.hopscotch.moments.config.helper.RESTErrorControllerAdvice;
+import in.hopscotch.moments.db.util.JDBCAccess;
 import in.hopscotch.moments.db.util.JPAAccess;
 
 @Configuration
@@ -58,6 +60,13 @@ public class HSMomentsServiceConfig {
         dataSource.setDebugUnreturnedConnectionStackTraces(true);
         dataSource.setConnectionCustomizerClassName("in.hopscotch.moments.config.helper.IsolationLevelReadCommittedConnectionCustomizer");
         return dataSource;
+    }
+    
+    @Bean
+    public JDBCAccess jdbcAccess() throws PropertyVetoException {
+        JDBCAccess jdbcAccess = new JDBCAccess();
+        jdbcAccess.setDataSource(writeDataSource());
+        return jdbcAccess;
     }
 
     @Bean
