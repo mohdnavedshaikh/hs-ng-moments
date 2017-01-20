@@ -22,5 +22,12 @@ public class UploadHSMomentsPhotoController {
     public UploadInfo uploadImage(MultipartHttpServletRequest request, HttpServletResponse response) {
         return uploadHSMomentsPhotosService.uploadImageFile(request, response);
     }
+    
+    @RequestMapping(value = "/uploadMomentsPhoto", method = RequestMethod.GET)
+    public UploadInfo getUploadImagePage(HttpServletResponse response) {
+        
+        return null;
+        //return uploadHSMomentsPhotosService.uploadImageFile(request, response);
+    }
 
 }
