@@ -1,5 +1,9 @@
 package in.hopscotch.moments.util;
 
+import java.io.File;
+
+import org.springframework.stereotype.Component;
+
 import com.amazonaws.auth.ClasspathPropertiesFileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -12,21 +16,20 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 
-import java.io.File;
-
-
+@Component
 public class S3Client {
+    
     private String bucketName;
 
     private String resourcePrefix;
 
     private final AmazonS3 s3Client;
 
-    public S3Client(String region) {
+    public S3Client() {
         s3Client = new AmazonS3Client(new ClasspathPropertiesFileCredentialsProvider());
-        if (StringUtils.hasText(region)) {
+        /*if (StringUtils.hasText(region)) {
             s3Client.setRegion(Region.getRegion(Regions.fromName(region)));
-        }
+        }*/
     }
 
     public PutObjectResult uploadFile(String key, File file) {

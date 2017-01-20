@@ -23,8 +23,8 @@ public class HSMomentsRepositoryImpl extends AbstractRepository<HSMomentsData> i
     JDBCAccess jdbcAccess;
 
     public static final String DELIVERED_PRODUCTS = "select pi.sku as sku, p.id as id, p.product_name as name, p.image_id as image from orders.order o "
-        + " inner join orders.orderitem oi on oi.order_id=o.id " + " inner join products.productitem pi on pi.sku=oi.sku " + " inner join products.product p on p.id=pi.product_id "
-        + " where o.customer_id=? and o.order_status_id=6 group by sku order by o.id desc";
+            + " inner join orders.orderitem oi on oi.order_id=o.id " + " inner join products.productitem pi on pi.sku=oi.sku " + " inner join products.product p on p.id=pi.product_id "
+            + " where o.customer_id=? and o.order_status_id=6 group by sku order by o.id desc";
 
     public static final String CHILD_INFO = "SELECT id, name, customer_id FROM customers.youngestchildageandgendercollect where customer_id=?";
 

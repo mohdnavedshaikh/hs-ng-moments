@@ -1,10 +1,11 @@
 package in.hopscotch.moments.service;
 
-import in.hopscotch.moments.entity.HSMomentsData;
+import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 public interface UploadHSMomentsPhotosService {
-    
-    void uploadMomentData(HSMomentsData hsMomentsData);
+
+    void uploadImageFile(MultipartHttpServletRequest request, HttpServletResponse response);
 
 }

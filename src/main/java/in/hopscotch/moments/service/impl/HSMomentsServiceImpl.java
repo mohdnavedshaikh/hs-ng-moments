@@ -28,8 +28,7 @@ public class HSMomentsServiceImpl implements HSMomentsService {
 
     @Override
     public HSMomentsData getHSMomentsById(Long momentsPhotoId) {
-        // TODO Auto-generated method stub
-        return null;
+        return hsMomentsRepository.getHSMomentsById(momentsPhotoId);
     }
 
 }
