@@ -6,6 +6,8 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import in.hopscotch.moments.api.request.ImageFileRequest;
+import in.hopscotch.moments.api.response.ImageResponse;
 import in.hopscotch.moments.entity.HSMomentsData;
 import in.hopscotch.moments.repository.HSMomentsRepository;
 import in.hopscotch.moments.service.HSMomentsService;
@@ -26,4 +28,8 @@ public class HSMomentsServiceImpl implements HSMomentsService {
         hsMomentsRepository.incrementLike(momentsPhotoId);
     }
 
+    @Override
+    public ImageResponse uploadImageFile(ImageFileRequest imageFileRequest) throws Exception {
+        return hsMomentsRepository.uploadImageFile(imageFileRequest);
+    }
 }

@@ -2,25 +2,37 @@ package in.hopscotch.moments.repository.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import in.hopscotch.moments.api.request.ImageFileRequest;
 import in.hopscotch.moments.api.response.ChildInfo;
 import in.hopscotch.moments.api.response.DeliveredProducts;
+import in.hopscotch.moments.api.response.ImageResponse;
 import in.hopscotch.moments.constant.NamedQueryConstant;
 import in.hopscotch.moments.db.util.JDBCAccess;
 import in.hopscotch.moments.entity.HSMomentsData;
+import in.hopscotch.moments.helper.UploadStrategy;
 import in.hopscotch.moments.repository.HSMomentsRepository;
+import in.hopscotch.moments.util.S3Client;
 
 @Repository
 public class HSMomentsRepositoryImpl extends AbstractRepository<HSMomentsData> implements HSMomentsRepository {
 
     @Inject
     JDBCAccess jdbcAccess;
+    
+    @Inject
+    S3Client s3Client;
+    
+    @Value("${CommonUploadsTStrategy}")
+    String uploadStrategy;
 
     public static final String DELIVERED_PRODUCTS = "select pi.sku as sku, p.id as id, p.product_name as name, p.image_id as image from orders.order o "
         + " inner join orders.orderitem oi on oi.order_id=o.id " + " inner join products.productitem pi on pi.sku=oi.sku " + " inner join products.product p on p.id=pi.product_id "
@@ -67,6 +79,14 @@ public class HSMomentsRepositoryImpl extends AbstractRepository<HSMomentsData> i
 
     public void incrementLike(Long momentsPhotoId) {
         executeUpdateUsingNamedQuery(NamedQueryConstant.HSMOMENTSDATA_INCREMENT_LIKES);
+    }
+    
+    public ImageResponse uploadImageFile(ImageFileRequest imageFileRequest) throws Exception {
+        String className = uploadStrategy;
+        UploadStrategy uploadStrategy = (UploadStrategy) Class.forName(className).newInstance();
+        uploadStrategy.setJpaAccess(jpaAccess);
+        uploadStrategy.setS3Client(s3Client);
+        return uploadStrategy.uploadImageFile(imageFileRequest, new Date());
     }
 
 }
