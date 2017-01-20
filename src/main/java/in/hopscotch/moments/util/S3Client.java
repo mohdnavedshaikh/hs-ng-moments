@@ -2,8 +2,6 @@ package in.hopscotch.moments.util;
 
 import java.io.File;
 
-import org.springframework.stereotype.Component;
-
 import com.amazonaws.auth.ClasspathPropertiesFileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -16,27 +14,25 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 
-@Component
 public class S3Client {
-    
+
     private String bucketName;
 
     private String resourcePrefix;
 
     private final AmazonS3 s3Client;
 
-    public S3Client() {
+    public S3Client(String region) {
         s3Client = new AmazonS3Client(new ClasspathPropertiesFileCredentialsProvider());
-        /*if (StringUtils.hasText(region)) {
+        if (StringUtils.hasText(region)) {
             s3Client.setRegion(Region.getRegion(Regions.fromName(region)));
-        }*/
+        }
     }
 
     public PutObjectResult uploadFile(String key, File file) {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setCacheControl("max-age=2592000");
-        PutObjectRequest putObjectRequest = new PutObjectRequest(this.getBucketName(), this.getResourcePrefix() + key, file)
-                .withCannedAcl(CannedAccessControlList.PublicReadWrite)
+        PutObjectRequest putObjectRequest = new PutObjectRequest(this.getBucketName(), this.getResourcePrefix() + key, file).withCannedAcl(CannedAccessControlList.PublicReadWrite)
                 .withMetadata(metadata);
         return s3Client.putObject(putObjectRequest);
     }
@@ -47,7 +43,8 @@ public class S3Client {
 
     public void copyFile(String oldKey, String newKey) {
         try {
-            s3Client.copyObject(new CopyObjectRequest(this.getBucketName(), this.getResourcePrefix() + oldKey, this.getBucketName(), this.getResourcePrefix() + newKey).withCannedAccessControlList(CannedAccessControlList.PublicReadWrite));
+            s3Client.copyObject(new CopyObjectRequest(this.getBucketName(), this.getResourcePrefix() + oldKey, this.getBucketName(), this.getResourcePrefix() + newKey)
+                    .withCannedAccessControlList(CannedAccessControlList.PublicReadWrite));
         } catch (AmazonS3Exception e) {
             return;
         }

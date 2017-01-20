@@ -74,4 +74,9 @@ public class HSMomentsRepositoryImpl extends AbstractRepository<HSMomentsData> i
         return get(momentsPhotoId);
     }
 
+    @Override
+    public void saveHSMomentsData(HSMomentsData hsMomentsData) {
+        save(hsMomentsData);
+    }
+
 }

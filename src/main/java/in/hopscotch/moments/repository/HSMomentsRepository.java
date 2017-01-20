@@ -17,5 +17,7 @@ public interface HSMomentsRepository {
     void incrementLike(Long momentsPhotoId);
 
     HSMomentsData getHSMomentsById(Long momentsPhotoId);
+    
+    void saveHSMomentsData(HSMomentsData hsMomentsData);
 
 }

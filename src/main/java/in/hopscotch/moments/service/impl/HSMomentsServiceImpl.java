@@ -31,4 +31,10 @@ public class HSMomentsServiceImpl implements HSMomentsService {
         return hsMomentsRepository.getHSMomentsById(momentsPhotoId);
     }
 
+    @Override
+    public void saveHSMomentsData(HSMomentsData hsMomentsData) {
+        hsMomentsRepository.saveHSMomentsData(hsMomentsData);
+        
+    }
+
 }

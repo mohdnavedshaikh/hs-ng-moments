@@ -2,8 +2,6 @@ package in.hopscotch.moments.service;
 
 import java.util.List;
 
-import in.hopscotch.moments.api.request.ImageFileRequest;
-import in.hopscotch.moments.api.response.ImageResponse;
 import in.hopscotch.moments.entity.HSMomentsData;
 
 public interface HSMomentsService {
@@ -13,6 +11,7 @@ public interface HSMomentsService {
     void incrementLike(Long momentsPhotoId);
 
     HSMomentsData getHSMomentsById(Long momentsPhotoId);
+    
+    void saveHSMomentsData(HSMomentsData hsMomentsData);
 
-    // ImageResponse uploadImageFile(ImageFileRequest imageFileRequest) throws Exception;
 }

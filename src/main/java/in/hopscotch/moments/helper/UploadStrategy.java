@@ -28,10 +28,10 @@ public abstract class UploadStrategy {
     protected S3Client s3Client;
 
     @Value("${com.nstechs.commerce.fileupload.hsmoments}")
-    protected String hsMoments;
+    protected String hsMoments = "/hsmoments";
 
     @Value("${filesystem.path}")
-    protected String FILESYSTEMPATH;
+    protected String FILESYSTEMPATH = "/tmp/hs/nfs/fstatic";
 
     public void setS3Client(S3Client s3Client) {
         this.s3Client = s3Client;
