@@ -21,6 +21,7 @@ import in.hopscotch.moments.api.response.ImageResponse;
 import in.hopscotch.moments.api.response.UploadImageInfo;
 import in.hopscotch.moments.api.response.UploadImagePageResponse;
 import in.hopscotch.moments.api.response.UploadInfo;
+import in.hopscotch.moments.entity.helper.CustomerInfo;
 import in.hopscotch.moments.helper.ImageLibraryServiceHelper;
 import in.hopscotch.moments.repository.UploadHSMomentsPhotosRepository;
 import in.hopscotch.moments.service.UploadHSMomentsPhotosService;
@@ -143,7 +144,8 @@ public class UploadHSMomentsPhotosServiceImpl implements UploadHSMomentsPhotosSe
     }
 
     @Override
-    public UploadImagePageResponse getUploadPageInfo(Integer customerId) {
+    public UploadImagePageResponse getUploadPageInfo(String uuId) {
+        Integer customerId = getCustomerId(uuId).getCustomerId();
         UploadImagePageResponse uploadImagePageResponse = new UploadImagePageResponse();
         uploadImagePageResponse.setChildInfos(getChildInfo(customerId));
         uploadImagePageResponse.setDeliveredProducts(getDeliveredProductInfo(customerId));
@@ -151,7 +153,7 @@ public class UploadHSMomentsPhotosServiceImpl implements UploadHSMomentsPhotosSe
     }
 
     @Override
-    public Integer getCustomerId(String uuId) {
+    public CustomerInfo getCustomerId(String uuId) {
         return uploadHSMomentsPhotosRepository.getCustomerId(uuId);
     }
 

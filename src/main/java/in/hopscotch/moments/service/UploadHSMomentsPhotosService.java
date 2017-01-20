@@ -10,6 +10,7 @@ import in.hopscotch.moments.api.response.ChildInfo;
 import in.hopscotch.moments.api.response.DeliveredProducts;
 import in.hopscotch.moments.api.response.UploadImagePageResponse;
 import in.hopscotch.moments.api.response.UploadInfo;
+import in.hopscotch.moments.entity.helper.CustomerInfo;
 
 public interface UploadHSMomentsPhotosService {
 
@@ -19,8 +20,8 @@ public interface UploadHSMomentsPhotosService {
     
     List<ChildInfo> getChildInfo(Integer customerId);
     
-    UploadImagePageResponse getUploadPageInfo(Integer customerId);
+    UploadImagePageResponse getUploadPageInfo(String uuId);
     
-    Integer getCustomerId(String uuId);
+    CustomerInfo getCustomerId(String uuId);
 
 }

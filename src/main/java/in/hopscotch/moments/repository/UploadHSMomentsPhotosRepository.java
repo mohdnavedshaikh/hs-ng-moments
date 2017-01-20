@@ -6,6 +6,7 @@ import in.hopscotch.moments.api.request.ImageFileRequest;
 import in.hopscotch.moments.api.response.ChildInfo;
 import in.hopscotch.moments.api.response.DeliveredProducts;
 import in.hopscotch.moments.api.response.ImageResponse;
+import in.hopscotch.moments.entity.helper.CustomerInfo;
 
 public interface UploadHSMomentsPhotosRepository {
 
@@ -15,6 +16,6 @@ public interface UploadHSMomentsPhotosRepository {
 
     List<ChildInfo> getChildInfo(Integer customerId);
     
-    Integer getCustomerId(String uuid);
+    CustomerInfo getCustomerId(String uuid);
 
 }

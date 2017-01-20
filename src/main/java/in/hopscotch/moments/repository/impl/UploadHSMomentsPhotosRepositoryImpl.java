@@ -17,6 +17,7 @@ import in.hopscotch.moments.api.response.DeliveredProducts;
 import in.hopscotch.moments.api.response.ImageResponse;
 import in.hopscotch.moments.db.util.JDBCAccess;
 import in.hopscotch.moments.db.util.JPAAccess;
+import in.hopscotch.moments.entity.helper.CustomerInfo;
 import in.hopscotch.moments.helper.UploadStrategy;
 import in.hopscotch.moments.repository.UploadHSMomentsPhotosRepository;
 import in.hopscotch.moments.util.S3Client;
@@ -41,7 +42,7 @@ public class UploadHSMomentsPhotosRepositoryImpl implements UploadHSMomentsPhoto
 
     public static final String CHILD_INFO = "SELECT id, name, customer_id FROM customers.youngestchildageandgendercollect where customer_id=?";
 
-    private static final String GET_CUSTOMERID_FROM_UUID = "select id as customer_id from customers.customer c join customers.customerdetail cd "
+    private static final String GET_CUSTOMERID_FROM_UUID = "select c.id as customer_id, concat(cd.first_name, ' ',  cd.last_name) as name from customers.customer c join customers.customerdetail cd "
         + " on c.id = cd.customer_id where c.uu_id = ?";
 
     public ImageResponse uploadImageFile(ImageFileRequest imageFileRequest) throws Exception {
@@ -84,11 +85,14 @@ public class UploadHSMomentsPhotosRepositoryImpl implements UploadHSMomentsPhoto
     }
 
     @Override
-    public Integer getCustomerId(String uuId) {
-        return jdbcAccess.findOne(GET_CUSTOMERID_FROM_UUID, new RowMapper<Integer>() {
+    public CustomerInfo getCustomerId(String uuId) {
+        return jdbcAccess.findOne(GET_CUSTOMERID_FROM_UUID, new RowMapper<CustomerInfo>() {
             @Override
-            public Integer mapRow(ResultSet resultSet,  int rowNum) throws SQLException {
-                return resultSet.getInt("customer_id");
+            public CustomerInfo mapRow(ResultSet rs,  int rowNum) throws SQLException {
+                CustomerInfo ci = new CustomerInfo();
+                ci.setCustomerId(rs.getInt("customer_id"));
+                ci.setCustomerName(rs.getString("name"));
+                return ci;
             }
         }, uuId);
     }
