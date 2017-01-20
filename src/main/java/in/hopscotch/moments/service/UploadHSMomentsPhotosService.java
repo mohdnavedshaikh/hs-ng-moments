@@ -4,8 +4,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import in.hopscotch.moments.api.response.UploadInfo;
+
 public interface UploadHSMomentsPhotosService {
 
-    void uploadImageFile(MultipartHttpServletRequest request, HttpServletResponse response);
+    UploadInfo uploadImageFile(MultipartHttpServletRequest request, HttpServletResponse response);
 
 }

@@ -30,7 +30,7 @@ public class UploadHSMomentsPhotosServiceImpl implements UploadHSMomentsPhotosSe
     @Inject
     UploadHSMomentsPhotosRepository uploadHSMomentsPhotosRepository;
 
-    public void uploadImageFile(MultipartHttpServletRequest request, HttpServletResponse response) {
+    public UploadInfo uploadImageFile(MultipartHttpServletRequest request, HttpServletResponse response) {
         UploadInfo info = new UploadInfo();
         String modelName = "hsmoments";
         String status = "Y";
@@ -52,6 +52,7 @@ public class UploadHSMomentsPhotosServiceImpl implements UploadHSMomentsPhotosSe
             out.flush();
             out.close();
         }
+        return info;
     }
 
     private void commonHandleSingleUploadImage(MultipartFile imageFile, String modelName, String status, MultipartHttpServletRequest request, UploadInfo info) throws Exception {
