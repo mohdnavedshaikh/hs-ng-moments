@@ -6,15 +6,15 @@ public class CustomerInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String customerId;
+    private Integer customerId;
     
     private String customerName;
 
-    public String getCustomerId() {
+    public Integer getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(Integer customerId) {
         this.customerId = customerId;
     }
 

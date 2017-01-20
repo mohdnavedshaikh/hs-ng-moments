@@ -59,5 +59,11 @@ public class UploadHSMomentsPhotoController {
         return "success";
     }
     
+    @RequestMapping(value = "/uploadMomentsPhoto", method = RequestMethod.GET)
+    public UploadInfo getUploadImagePage(HttpServletResponse response) {
+        
+        return null;
+        //return uploadHSMomentsPhotosService.uploadImageFile(request, response);
+    }
 
 }

@@ -1,5 +1,6 @@
 package in.hopscotch.moments.service.impl;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -13,10 +14,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import in.hopscotch.moments.api.request.ImageFileRequest;
+import in.hopscotch.moments.api.response.ChildInfo;
+import in.hopscotch.moments.api.response.DeliveredProducts;
 import in.hopscotch.moments.api.response.ImageArea;
 import in.hopscotch.moments.api.response.ImageResponse;
 import in.hopscotch.moments.api.response.UploadImageInfo;
+import in.hopscotch.moments.api.response.UploadImagePageResponse;
 import in.hopscotch.moments.api.response.UploadInfo;
+import in.hopscotch.moments.entity.helper.CustomerInfo;
+import in.hopscotch.moments.helper.ImageLibraryServiceHelper;
 import in.hopscotch.moments.repository.UploadHSMomentsPhotosRepository;
 import in.hopscotch.moments.service.UploadHSMomentsPhotosService;
 import in.hopscotch.moments.util.Convert;
@@ -31,6 +37,9 @@ public class UploadHSMomentsPhotosServiceImpl implements UploadHSMomentsPhotosSe
     @Inject
     UploadHSMomentsPhotosRepository uploadHSMomentsPhotosRepository;
 
+    @Inject
+    ImageLibraryServiceHelper imageLibraryServiceHelper;
+    
     public UploadInfo uploadImageFile(MultipartHttpServletRequest request, HttpServletResponse response) {
         UploadInfo info = new UploadInfo();
         String modelName = "hsmoments";
@@ -113,6 +122,39 @@ public class UploadHSMomentsPhotosServiceImpl implements UploadHSMomentsPhotosSe
 
     public String getFileName(String uuid, String contentType) {
         return uuid + "_full." + (contentType.contains("png") ? "png" : contentType.contains("gif") ? "gif" : "jpg");
+    }
+
+    @Override
+    public List<DeliveredProducts> getDeliveredProductInfo(Integer customerId) {
+        List<DeliveredProducts> deliveredProducts = uploadHSMomentsPhotosRepository.getDeliveredProductInfo(customerId);
+        for(DeliveredProducts deliveredProduct : deliveredProducts) {
+            if(deliveredProduct.getImageUrl() != null) {
+                String imageUrl = imageLibraryServiceHelper.getImageCDNUrl(false, deliveredProduct.getImageUrl());
+                if (imageUrl != null) {
+                deliveredProduct.setImageUrl(imageUrl);
+                }
+            }
+        }
+        return deliveredProducts;
+    }
+
+    @Override
+    public List<ChildInfo> getChildInfo(Integer customerId) {
+        return uploadHSMomentsPhotosRepository.getChildInfo(customerId);
+    }
+
+    @Override
+    public UploadImagePageResponse getUploadPageInfo(String uuId) {
+        Integer customerId = getCustomerId(uuId).getCustomerId();
+        UploadImagePageResponse uploadImagePageResponse = new UploadImagePageResponse();
+        uploadImagePageResponse.setChildInfos(getChildInfo(customerId));
+        uploadImagePageResponse.setDeliveredProducts(getDeliveredProductInfo(customerId));
+        return uploadImagePageResponse;
+    }
+
+    @Override
+    public CustomerInfo getCustomerId(String uuId) {
+        return uploadHSMomentsPhotosRepository.getCustomerId(uuId);
     }
 
 }
