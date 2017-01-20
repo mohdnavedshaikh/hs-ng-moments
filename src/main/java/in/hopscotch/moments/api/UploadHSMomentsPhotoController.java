@@ -7,17 +7,19 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import in.hopscotch.moments.api.cookie.CookieConstants;
 import in.hopscotch.moments.api.cookie.CookieContext;
 import in.hopscotch.moments.api.request.HSMomentPhotoRequest;
+import in.hopscotch.moments.api.response.HSMomentPhotoResponse;
 import in.hopscotch.moments.api.response.UploadHSMomentPhotoInfo;
 import in.hopscotch.moments.api.response.UploadImagePageResponse;
 import in.hopscotch.moments.api.response.UploadInfo;
 import in.hopscotch.moments.converter.DTO2BOConverter;
 import in.hopscotch.moments.entity.HSMomentsData;
+import in.hopscotch.moments.entity.helper.CustomerInfo;
 import in.hopscotch.moments.helper.ImageLibraryServiceHelper;
 import in.hopscotch.moments.service.HSMomentsService;
 import in.hopscotch.moments.service.UploadHSMomentsPhotosService;
@@ -54,16 +56,20 @@ public class UploadHSMomentsPhotoController {
     }
 
     @RequestMapping(value = "/uploadMomentsPhotoData", method = RequestMethod.POST)
-    public String uploadMomentsPhotoData(@RequestBody HSMomentPhotoRequest hsMomentPhotoRequest) {
+    public HSMomentPhotoResponse uploadMomentsPhotoData(@RequestBody HSMomentPhotoRequest hsMomentPhotoRequest) {
         HSMomentsData hsMomentsData = DTO2BOConverter.convertHSMomentPhotoRequestTOHSMomentsData(hsMomentPhotoRequest);
+        CustomerInfo customerInfo = uploadHSMomentsPhotosService.getCustomerId(hsMomentPhotoRequest.getCustomerUUID());
+        hsMomentsData.setCustomerId(customerInfo.getCustomerId());
+        hsMomentsData.setCustomerName(customerInfo.getCustomerName());
         hsMomentsService.saveHSMomentsData(hsMomentsData);
-
-        return "success";
+        HSMomentPhotoResponse hsMomentPhotoResponse = new HSMomentPhotoResponse();
+        hsMomentPhotoResponse.setStatus("success");
+        return hsMomentPhotoResponse;
     }
 
     @RequestMapping(value = "/getUploadImagePageProductAndKidData", method = RequestMethod.GET)
-    public UploadImagePageResponse getUploadImagePageProductAndKidData() {
-        return uploadHSMomentsPhotosService.getUploadPageInfo(cookieContext.getCookie(CookieConstants.LOGGED_UUID));
+    public UploadImagePageResponse getUploadImagePageProductAndKidData(@RequestParam(value = "customerUUID", required = true) String customerUUID) {
+        return uploadHSMomentsPhotosService.getUploadPageInfo(customerUUID);
     }
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -19,6 +20,7 @@ import in.hopscotch.moments.service.ShopThisLookPageService;
 import in.hopscotch.moments.service.ShopThisLookProductService;
 
 @Service
+@Transactional
 public class ShopThisLookPageServiceImpl implements ShopThisLookPageService {
 
     @Inject

@@ -32,18 +32,18 @@ public class UploadHSMomentsPhotosRepositoryImpl implements UploadHSMomentsPhoto
 
     @Value("${CommonUploadsTStrategy}")
     String uploadStrategy;
-    
+
     @Inject
     JDBCAccess jdbcAccess;
-    
+
     public static final String DELIVERED_PRODUCTS = "select pi.sku as sku, p.id as id, p.product_name as name, p.image_id as image from orders.order o "
             + " inner join orders.orderitem oi on oi.order_id=o.id " + " inner join products.productitem pi on pi.sku=oi.sku " + " inner join products.product p on p.id=pi.product_id "
             + " where o.customer_id=? and o.order_status_id=6 group by sku order by o.id desc";
 
-    public static final String CHILD_INFO = "SELECT id, name, customer_id FROM customers.youngestchildageandgendercollect where customer_id=?";
+    public static final String CHILD_INFO = "SELECT id, name, customer_id FROM customers.youngestchildageandgendercollect where customer_id=? AND name IS NOT NULL AND name <> ''";
 
     private static final String GET_CUSTOMERID_FROM_UUID = "select c.id as customer_id, concat(cd.first_name, ' ',  cd.last_name) as name from customers.customer c join customers.customerdetail cd "
-        + " on c.id = cd.customer_id where c.uu_id = ?";
+            + " on c.id = cd.customer_id where c.uu_id = ?";
 
     public ImageResponse uploadImageFile(ImageFileRequest imageFileRequest) throws Exception {
         String className = uploadStrategy;
@@ -52,7 +52,7 @@ public class UploadHSMomentsPhotosRepositoryImpl implements UploadHSMomentsPhoto
         uploadStrategy.setS3Client(s3Client);
         return uploadStrategy.uploadImageFile(imageFileRequest, new Date());
     }
-    
+
     @Override
     public List<DeliveredProducts> getDeliveredProductInfo(Integer customerId) {
         List<DeliveredProducts> deliveredproducts = jdbcAccess.find(DELIVERED_PRODUCTS, new RowMapper<DeliveredProducts>() {
@@ -88,7 +88,7 @@ public class UploadHSMomentsPhotosRepositoryImpl implements UploadHSMomentsPhoto
     public CustomerInfo getCustomerId(String uuId) {
         return jdbcAccess.findOne(GET_CUSTOMERID_FROM_UUID, new RowMapper<CustomerInfo>() {
             @Override
-            public CustomerInfo mapRow(ResultSet rs,  int rowNum) throws SQLException {
+            public CustomerInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
                 CustomerInfo ci = new CustomerInfo();
                 ci.setCustomerId(rs.getInt("customer_id"));
                 ci.setCustomerName(rs.getString("name"));
