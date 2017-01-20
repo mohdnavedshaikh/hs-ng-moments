@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import in.hopscotch.moments.api.cookie.CookieContext;
 import in.hopscotch.moments.api.request.HSMomentPhotoRequest;
 import in.hopscotch.moments.api.response.UploadHSMomentPhotoInfo;
 import in.hopscotch.moments.api.response.UploadInfo;
@@ -31,6 +32,8 @@ public class UploadHSMomentsPhotoController {
     DTO2BOConverter  DTO2BOConverter;
     @Inject
     HSMomentsService hsMomentsService;
+    @Inject
+    CookieContext cookieContext;
 
     @RequestMapping(value = "/uploadMomentsPhoto", method = RequestMethod.POST)
     public UploadHSMomentPhotoInfo uploadImage(MultipartHttpServletRequest request, HttpServletResponse response) {
@@ -52,6 +55,7 @@ public class UploadHSMomentsPhotoController {
     public String uploadMomentsPhotoData(@RequestBody HSMomentPhotoRequest hsMomentPhotoRequest) {
         HSMomentsData hsMomentsData =  DTO2BOConverter.convertHSMomentPhotoRequestTOHSMomentsData(hsMomentPhotoRequest);
         hsMomentsService.saveHSMomentsData(hsMomentsData);
+        
         return "success";
     }
     
