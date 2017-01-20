@@ -6,8 +6,8 @@ import in.hopscotch.moments.entity.ImageLibrary;
 
 public interface ImageLibraryRepository {
 
-    ImageLibrary getById(String imageId);
+    ImageLibrary getById(boolean isFromHSMoments, String imageId);
 
-    Map<String, ImageLibrary> getImageLibraryMap(Object[] params);
+    Map<String, ImageLibrary> getImageLibraryMap(boolean isFromHSMoments, Object[] params);
 
 }

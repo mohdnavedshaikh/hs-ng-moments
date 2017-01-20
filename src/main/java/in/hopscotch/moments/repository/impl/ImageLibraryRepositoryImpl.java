@@ -18,14 +18,17 @@ import in.hopscotch.moments.repository.ImageLibraryRepository;
 @Repository
 public class ImageLibraryRepositoryImpl implements ImageLibraryRepository {
 
-    private static final String FIND_IMAGE_SQL = "select * from DICTIONARY.ImageLibrary where image_id = ?";
-    private static final String FIND_LIST_OF_IMAGE_SQL = "select * from DICTIONARY.ImageLibrary where image_id IN ($IMAGEIDS$)";
+    private static final String DICTIONARY_FIND_IMAGE_SQL = "select * from DICTIONARY.ImageLibrary where image_id = ?";
+    private static final String DICTIONARY_FIND_LIST_OF_IMAGE_SQL = "select * from DICTIONARY.ImageLibrary where image_id IN ($IMAGEIDS$)";
+    private static final String HSMOMENTS_FIND_IMAGE_SQL = "select * from hsmoments.ImageLibrary where image_id = ?";
+    private static final String HSMOMENTS_FIND_LIST_OF_IMAGE_SQL = "select * from hsmoments.ImageLibrary where image_id IN ($IMAGEIDS$)";
 
     @Inject
     private JDBCAccess writeJdbcAccess;
 
-    public ImageLibrary getById(String imageId) {
-        List<ImageLibrary> imageLibraries = writeJdbcAccess.find(FIND_IMAGE_SQL, new RowMapper<ImageLibrary>() {
+    public ImageLibrary getById(boolean isFromHSMoments, String imageId) {
+
+        List<ImageLibrary> imageLibraries = writeJdbcAccess.find(isFromHSMoments ? HSMOMENTS_FIND_IMAGE_SQL : DICTIONARY_FIND_IMAGE_SQL, new RowMapper<ImageLibrary>() {
             @Override
             public ImageLibrary mapRow(ResultSet resultSet, int rowNum) throws SQLException {
                 return packageImageLibrary(resultSet);
@@ -37,7 +40,7 @@ public class ImageLibraryRepositoryImpl implements ImageLibraryRepository {
         return imageLibraries.get(0);
     }
 
-    public Map<String, ImageLibrary> getImageLibraryMap(Object[] params) {
+    public Map<String, ImageLibrary> getImageLibraryMap(boolean isFromHSMoments, Object[] params) {
         final Map<String, ImageLibrary> map = new HashMap<>();
         StringBuilder questionMark = new StringBuilder("");
         for (int i = 1; i <= params.length; i++) {
@@ -46,7 +49,7 @@ public class ImageLibraryRepositoryImpl implements ImageLibraryRepository {
             if (i != params.length)
                 questionMark.append(", ");
         }
-        String sqlQuery = FIND_LIST_OF_IMAGE_SQL.replace("$IMAGEIDS$", questionMark);
+        String sqlQuery = (isFromHSMoments ? HSMOMENTS_FIND_LIST_OF_IMAGE_SQL : DICTIONARY_FIND_LIST_OF_IMAGE_SQL).replace("$IMAGEIDS$", questionMark);
         writeJdbcAccess.find(sqlQuery, new RowMapper<ImageLibrary>() {
             @Override
             public ImageLibrary mapRow(ResultSet resultSet, int rowNum) throws SQLException {

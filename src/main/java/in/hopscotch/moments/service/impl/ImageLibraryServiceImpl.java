@@ -17,18 +17,18 @@ public class ImageLibraryServiceImpl implements ImageLibraryService {
     @Inject
     ImageLibraryRepository imageLibraryRepository;
 
-    public ImageLibrary getImageLibrary(String imageId) {
-        return imageLibraryRepository.getById(imageId);
+    public ImageLibrary getImageLibrary(boolean isFromHSMoments, String imageId) {
+        return imageLibraryRepository.getById(isFromHSMoments, imageId);
     }
-    
-    public String getImageUrl(String imageId) {
-        ImageLibrary library = getImageLibrary(imageId);
+
+    public String getImageUrl(boolean isFromHSMoments, String imageId) {
+        ImageLibrary library = getImageLibrary(isFromHSMoments, imageId);
         return library == null ? null : library.getImagePath() + "?version=" + library.getVersion();
     }
 
-    public Map<String, ImageLibrary> getImageLibraryMap(List<String> imageIds) {
+    public Map<String, ImageLibrary> getImageLibraryMap(boolean isFromHSMoments, List<String> imageIds) {
         Object[] imageIdsArr = imageIds.toArray();
-        Map<String, ImageLibrary> mapOfImageIdAndImageLib = imageLibraryRepository.getImageLibraryMap(imageIdsArr);
+        Map<String, ImageLibrary> mapOfImageIdAndImageLib = imageLibraryRepository.getImageLibraryMap(isFromHSMoments, imageIdsArr);
         return mapOfImageIdAndImageLib;
     }
 
