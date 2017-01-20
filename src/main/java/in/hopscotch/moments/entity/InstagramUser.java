@@ -1,21 +1,22 @@
 package in.hopscotch.moments.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class InstagramUser {
 
-    @JsonProperty("id")
+    @XmlElement(name = "id")
     Integer id;
     
-    @JsonProperty("username")
+    @XmlElement(name = "username")
     String userName;
     
-    @JsonProperty("full_name")
+    @XmlElement(name = "full_name")
     String fullName;
     
-    @JsonProperty("profile_picture")
+    @XmlElement(name = "profile_picture")
     String profilePicture;
 
     public Integer getId() {

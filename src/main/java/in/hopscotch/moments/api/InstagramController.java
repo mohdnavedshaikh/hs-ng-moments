@@ -2,7 +2,9 @@ package in.hopscotch.moments.api;
 
 import in.hopscotch.moments.api.cookie.CookieConstants;
 import in.hopscotch.moments.api.cookie.CookieContext;
+import in.hopscotch.moments.entity.InstagramAccessTokenResponse;
 import in.hopscotch.moments.service.InstagramService;
+import in.hopscotch.moments.util.JSON;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +17,6 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,8 +68,8 @@ public class InstagramController {
             } else {
                 InputStream inputStream = connection.getInputStream();
                 String output = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
-                JSONObject responseObject = new JSONObject(output);
-                String accessToken =  responseObject.getString("access_token");
+                InstagramAccessTokenResponse response = JSON.fromJSON(InstagramAccessTokenResponse.class, output);
+                String accessToken =  response.getAccessToken();
                 String uuId = cookieContext.getCookie(CookieConstants.LOGGED_UUID);
                 instagramService.insertOrUpdateAccessToken(uuId, accessToken);
             }
