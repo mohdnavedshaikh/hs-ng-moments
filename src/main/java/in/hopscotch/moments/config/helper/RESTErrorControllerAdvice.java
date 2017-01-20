@@ -1,6 +1,5 @@
 package in.hopscotch.moments.config.helper;
 
-import org.elasticsearch.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import in.hopscotch.moments.web.exception.ErrorResponse;
 import in.hopscotch.moments.web.exception.ErrorResponseBuilder;
+import in.hopscotch.moments.web.exception.ResourceNotFoundException;
 
 @ControllerAdvice
 public class RESTErrorControllerAdvice {

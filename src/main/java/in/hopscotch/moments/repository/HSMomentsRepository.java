@@ -15,5 +15,7 @@ public interface HSMomentsRepository {
     public List<ChildInfo> getChildInfo(Integer customerId);
 
     void incrementLike(Long momentsPhotoId);
+    
+    HSMomentsData getHSMomentsById(Long momentsPhotoId);
 
 }

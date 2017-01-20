@@ -10,6 +10,7 @@ import in.hopscotch.moments.entity.HSMomentsData;
 import in.hopscotch.moments.service.UploadHSMomentsPhotosService;
 
 @RestController
+@RequestMapping("/hsmoments")
 public class UploadHSMomentsPhotosController {
     
     @Inject

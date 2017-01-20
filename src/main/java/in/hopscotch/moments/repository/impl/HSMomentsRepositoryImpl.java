@@ -69,4 +69,9 @@ public class HSMomentsRepositoryImpl extends AbstractRepository<HSMomentsData> i
         executeUpdateUsingNamedQuery(NamedQueryConstant.HSMOMENTSDATA_INCREMENT_LIKES);
     }
 
+    @Override
+    public HSMomentsData getHSMomentsById(Long momentsPhotoId) {
+        return get(momentsPhotoId);
+    }
+
 }
