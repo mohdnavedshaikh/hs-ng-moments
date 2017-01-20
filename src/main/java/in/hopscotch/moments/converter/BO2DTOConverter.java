@@ -29,7 +29,7 @@ public class BO2DTOConverter {
         hsMomentsDatas.forEach(mdata -> {
             MomentsPhoto mp = new MomentsPhoto();
             mp.setMomentsPhotoId(mdata.getId());
-            mp.setImageURL(!StringUtils.isEmpty(mdata.getHsImageURL()) ? imageLibraryHelper.getImageCDNUrl(mdata.getHsImageURL()) : mdata.getInstagramImageURL());
+            mp.setImageURL(!StringUtils.isEmpty(mdata.getHsImageURL()) ? imageLibraryHelper.getImageCDNUrl(true, mdata.getHsImageURL()) : mdata.getInstagramImageURL());
             mp.setLikes(mdata.getLikes());
             mp.setTitle(mdata.getTitle());
             mp.setName(!StringUtils.isEmpty(mdata.getTaggedKidNames()) ? mdata.getTaggedKidNames() : mdata.getCustomerName());
@@ -43,7 +43,7 @@ public class BO2DTOConverter {
             return null;
 
         ContestWinnerInfo contestWinnerInfo = new ContestWinnerInfo();
-        String imageUrl = !StringUtils.isEmpty(contestWinner.getHsmomentsdata().getHsImageURL()) ? imageLibraryHelper.getImageCDNUrl(contestWinner.getHsmomentsdata().getHsImageURL())
+        String imageUrl = !StringUtils.isEmpty(contestWinner.getHsmomentsdata().getHsImageURL()) ? imageLibraryHelper.getImageCDNUrl(true, contestWinner.getHsmomentsdata().getHsImageURL())
                 : contestWinner.getHsmomentsdata().getInstagramImageURL();
         contestWinnerInfo.setImageURL(imageUrl);
         contestWinnerInfo.setContestDescription(contestWinner.getHsMomentsContest().getDescription());

@@ -7,10 +7,10 @@ import in.hopscotch.moments.entity.ImageLibrary;
 
 public interface ImageLibraryService {
 
-    ImageLibrary getImageLibrary(String imageId);
+    ImageLibrary getImageLibrary(boolean isFromHSMoments, String imageId);
 
-    Map<String, ImageLibrary> getImageLibraryMap(List<String> imageIds);
+    Map<String, ImageLibrary> getImageLibraryMap(boolean isFromHSMoments, List<String> imageIds);
 
-    String getImageUrl(String imageId);
+    String getImageUrl(boolean isFromHSMoments, String imageId);
 
 }

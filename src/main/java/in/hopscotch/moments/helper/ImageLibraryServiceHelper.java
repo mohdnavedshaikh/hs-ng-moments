@@ -21,17 +21,18 @@ public class ImageLibraryServiceHelper {
 
     @Inject
     ImageLibraryService imageLibraryService;
-    
-    public String getImageCDNUrl(String imageId) {
-        if (!StringUtils.hasText(imageId)) return null;
+
+    public String getImageCDNUrl(boolean isFromHSMoments, String imageId) {
+        if (!StringUtils.hasText(imageId))
+            return null;
         StringBuilder builder = new StringBuilder();
-        builder.append("https://").append(fileDns).append("/fstatic").append(imageLibraryService.getImageUrl(imageId));
+        builder.append("https://").append(fileDns).append("/fstatic").append(imageLibraryService.getImageUrl(isFromHSMoments, imageId));
         return builder.toString();
     }
 
-    public Map<String, String> getMapOfImageIdAndImageCDNUrl(List<String> imageIds) {
+    public Map<String, String> getMapOfImageIdAndImageCDNUrl(boolean isFromHSMoments, List<String> imageIds) {
         Map<String, String> mapOfImageIdAndImageCDNUrl = new HashMap<String, String>();
-        Map<String, ImageLibrary> mapOfImageIdAndImageLib = imageLibraryService.getImageLibraryMap(imageIds);
+        Map<String, ImageLibrary> mapOfImageIdAndImageLib = imageLibraryService.getImageLibraryMap(isFromHSMoments, imageIds);
 
         for (Map.Entry<String, ImageLibrary> entry : mapOfImageIdAndImageLib.entrySet()) {
             String imageCDNUrl = frameImageCDNUrl(entry.getValue() == null ? null : entry.getValue().getImagePath() + "?version=" + entry.getValue().getVersion());
