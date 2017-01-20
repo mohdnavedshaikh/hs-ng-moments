@@ -29,9 +29,6 @@ dependencies {
     compile(
              'org.springframework.boot:spring-boot-starter-web:1.4.3.RELEASE',
              'org.springframework.boot:spring-boot-starter-data-jpa:1.4.3.RELEASE',
-             'org.elasticsearch:elasticsearch:5.1.1',
-             'org.elasticsearch.client:transport:5.1.1',
-             'org.elasticsearch.plugin:transport-netty4-client:5.1.1',
              'com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.6.2',
              'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.2',
              'mysql:mysql-connector-java:5.1.32',
@@ -42,6 +39,7 @@ dependencies {
              'org.hibernate:hibernate-validator:5.3.4.Final',
              'org.hibernate:hibernate-entitymanager:5.2.6.Final',
              'org.hibernate:hibernate-core:5.2.6.Final',
+             'com.amazonaws:aws-java-sdk:1.8.3',
              'com.mchange:c3p0:0.9.5'
           )     
            

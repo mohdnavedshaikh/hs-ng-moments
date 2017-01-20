@@ -26,4 +26,15 @@ public class HSMomentsServiceImpl implements HSMomentsService {
         hsMomentsRepository.incrementLike(momentsPhotoId);
     }
 
+    @Override
+    public HSMomentsData getHSMomentsById(Long momentsPhotoId) {
+        return hsMomentsRepository.getHSMomentsById(momentsPhotoId);
+    }
+
+    @Override
+    public void saveHSMomentsData(HSMomentsData hsMomentsData) {
+        hsMomentsRepository.saveHSMomentsData(hsMomentsData);
+        
+    }
+
 }

@@ -13,13 +13,13 @@ import in.hopscotch.moments.api.response.ContestWinnerInfo;
 import in.hopscotch.moments.api.response.MomentsPhoto;
 import in.hopscotch.moments.entity.ContestWinner;
 import in.hopscotch.moments.entity.HSMomentsData;
-import in.hopscotch.moments.util.HSMomentsUtil;
+import in.hopscotch.moments.helper.ImageLibraryServiceHelper;
 
 @Component
 public class BO2DTOConverter {
 
     @Inject
-    HSMomentsUtil hsMomentsUtil;
+    ImageLibraryServiceHelper imageLibraryHelper;
 
     public List<MomentsPhoto> convertListofHSMomentsDataToMomentsPhoto(List<HSMomentsData> hsMomentsDatas) {
         List<MomentsPhoto> momentsPhotos = new ArrayList<>();
@@ -29,7 +29,7 @@ public class BO2DTOConverter {
         hsMomentsDatas.forEach(mdata -> {
             MomentsPhoto mp = new MomentsPhoto();
             mp.setMomentsPhotoId(mdata.getId());
-            mp.setImageURL(!StringUtils.isEmpty(mdata.getHsImageURL()) ? hsMomentsUtil.getImageCDNUrl(mdata.getHsImageURL()) : mdata.getInstagramImageURL());
+            mp.setImageURL(!StringUtils.isEmpty(mdata.getHsImageURL()) ? imageLibraryHelper.getImageCDNUrl(true, mdata.getHsImageURL()) : mdata.getInstagramImageURL());
             mp.setLikes(mdata.getLikes());
             mp.setTitle(mdata.getTitle());
             mp.setName(!StringUtils.isEmpty(mdata.getTaggedKidNames()) ? mdata.getTaggedKidNames() : mdata.getCustomerName());
@@ -43,7 +43,7 @@ public class BO2DTOConverter {
             return null;
 
         ContestWinnerInfo contestWinnerInfo = new ContestWinnerInfo();
-        String imageUrl = !StringUtils.isEmpty(contestWinner.getHsmomentsdata().getHsImageURL()) ? hsMomentsUtil.getImageCDNUrl(contestWinner.getHsmomentsdata().getHsImageURL())
+        String imageUrl = !StringUtils.isEmpty(contestWinner.getHsmomentsdata().getHsImageURL()) ? imageLibraryHelper.getImageCDNUrl(true, contestWinner.getHsmomentsdata().getHsImageURL())
                 : contestWinner.getHsmomentsdata().getInstagramImageURL();
         contestWinnerInfo.setImageURL(imageUrl);
         contestWinnerInfo.setContestDescription(contestWinner.getHsMomentsContest().getDescription());

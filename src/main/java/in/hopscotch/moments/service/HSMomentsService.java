@@ -9,4 +9,9 @@ public interface HSMomentsService {
     List<HSMomentsData> getHSMomentsData(boolean newest, int pageNo, int pageSize);
 
     void incrementLike(Long momentsPhotoId);
+
+    HSMomentsData getHSMomentsById(Long momentsPhotoId);
+    
+    void saveHSMomentsData(HSMomentsData hsMomentsData);
+
 }
