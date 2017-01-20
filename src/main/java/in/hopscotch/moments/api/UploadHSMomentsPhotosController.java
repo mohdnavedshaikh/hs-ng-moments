@@ -16,6 +16,13 @@ public class UploadHSMomentsPhotosController {
     UploadHSMomentsPhotosService uploadHSMomentsPhotosService;
     
     @RequestMapping(value = "/uploadMomentsPhotos", method = RequestMethod.GET)
+    public String getUploadMomentsPage() {
+        Integer customerId = 12341234;
+        
+        return "Success";
+    }
+    
+    @RequestMapping(value = "/uploadMomentsPhotos", method = RequestMethod.POST)
     public String testSpringMicroService() {
         HSMomentsData hsMomentsData = new HSMomentsData();
         // hsMomentsData.setId(1L);
