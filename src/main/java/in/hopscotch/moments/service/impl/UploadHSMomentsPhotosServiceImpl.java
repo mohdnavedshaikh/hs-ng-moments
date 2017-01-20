@@ -1,11 +1,11 @@
 package in.hopscotch.moments.service.impl;
 
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +28,7 @@ import in.hopscotch.moments.util.Convert;
 import in.hopscotch.moments.util.ImageUtil;
 
 @Service
+@Transactional
 public class UploadHSMomentsPhotosServiceImpl implements UploadHSMomentsPhotosService {
 
     private final Logger logger = LoggerFactory.getLogger(UploadHSMomentsPhotosServiceImpl.class);
@@ -42,24 +43,17 @@ public class UploadHSMomentsPhotosServiceImpl implements UploadHSMomentsPhotosSe
         UploadInfo info = new UploadInfo();
         String modelName = "hsmoments";
         String status = "Y";
-        PrintWriter out = null;
         try {
             request.setCharacterEncoding("UTF-8");
             response.setContentType("text/html;charset=UTF-8");
             response.setDateHeader("Expires", 0);
-            out = response.getWriter();
             MultipartFile imageFile = request.getFile("imageFile");
             this.commonHandleSingleUploadImage(imageFile, modelName, status, request, info);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             info.setStatus(false);
             info.setErrorMsg(e.getMessage());
-        } finally {
-            String result = "result";// JSONBinder.toJSON(info); // todo
-            out.write(result);
-            out.flush();
-            out.close();
-        }
+        } 
         return info;
     }
 

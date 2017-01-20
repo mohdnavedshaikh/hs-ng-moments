@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import in.hopscotch.moments.api.request.ImageFileRequest;
 import in.hopscotch.moments.api.response.ImageArea;
 import in.hopscotch.moments.api.response.ImageResponse;
@@ -12,6 +14,7 @@ import in.hopscotch.moments.entity.ImageLibrary;
 import in.hopscotch.moments.helper.CompressImage;
 import in.hopscotch.moments.helper.UploadStrategy;
 
+@Component
 public class CommonUploadsTStrategy extends UploadStrategy {
 
     @Override
@@ -25,7 +28,8 @@ public class CommonUploadsTStrategy extends UploadStrategy {
         Integer[] fullSize = getImgInfo(imageDiskPath);
         Integer[] bigSize = compressImage.compress(imageDiskPath, getBigFile(imageDiskPath), 420, 420, imageFileRequest.getContentType());
         Integer[] smallSize = compressImage.compress(imageDiskPath, getSmallFile(imageDiskPath), 70, 70, imageFileRequest.getContentType());
-        //compressImage.compress(imageDiskPath, imageDiskPath, fullSize[0], fullSize[1], imageFileRequest.getContentType());
+        // compressImage.compress(imageDiskPath, imageDiskPath, fullSize[0],
+        // fullSize[1], imageFileRequest.getContentType());
 
         imageLibrary.setLargeSize(bigSize[0] + "," + bigSize[1]);
         imageLibrary.setThumbnailSize(smallSize[0] + "," + smallSize[1]);
@@ -39,6 +43,5 @@ public class CommonUploadsTStrategy extends UploadStrategy {
         imageAreas.add(new ImageArea("thumbnail", smallSize[0], smallSize[1]));
         return ImageResponse.createImageResponse(imageFileRequest.getModelName(), imageLibrary.getImageId(), imageLibrary.getImagePath(), imageLibrary.getVersion(), imageAreas);
     }
-
 
 }

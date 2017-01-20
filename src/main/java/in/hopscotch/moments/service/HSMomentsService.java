@@ -11,6 +11,7 @@ public interface HSMomentsService {
     void incrementLike(Long momentsPhotoId);
 
     HSMomentsData getHSMomentsById(Long momentsPhotoId);
+    
+    void saveHSMomentsData(HSMomentsData hsMomentsData);
 
-    // ImageResponse uploadImageFile(ImageFileRequest imageFileRequest) throws Exception;
 }

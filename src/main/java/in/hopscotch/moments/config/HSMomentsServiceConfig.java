@@ -13,6 +13,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -39,10 +40,11 @@ import in.hopscotch.moments.api.interceptor.CookieInterceptor;
 import in.hopscotch.moments.config.helper.RESTErrorControllerAdvice;
 import in.hopscotch.moments.db.util.JDBCAccess;
 import in.hopscotch.moments.db.util.JPAAccess;
+import in.hopscotch.moments.util.S3Client;
 
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
-@PropertySources({ @PropertySource("classpath:application.properties"), @PropertySource("classpath:site-jdbc.properties") })
+@PropertySources({ @PropertySource("classpath:application.properties"), @PropertySource("classpath:site-jdbc.properties"), @PropertySource("classpath:AwsCredentials.properties") })
 @EnableWebMvc
 public class HSMomentsServiceConfig extends WebMvcConfigurerAdapter {
 
@@ -133,6 +135,19 @@ public class HSMomentsServiceConfig extends WebMvcConfigurerAdapter {
     @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
     CookieContext cookieContext() {
         return new CookieContext();
+    }
+
+    @Bean
+    public S3Client s3Client() {
+        S3Client s3Client = new S3Client(env.getRequiredProperty("com.nstechs.commerce.file.region"));
+        s3Client.setBucketName(env.getRequiredProperty("com.nstechs.commerce.cdn.bucketname"));
+        s3Client.setResourcePrefix("fstatic");
+        return s3Client;
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 
 }

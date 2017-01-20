@@ -10,7 +10,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "hsmoments.image_library")
+@Table(name = "hsmoments.imagelibrary")
 public class ImageLibrary {
 
     private static final long serialVersionUID = 1L;
