@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import in.hopscotch.moments.api.cookie.CookieConstants;
 import in.hopscotch.moments.api.cookie.CookieContext;
 import in.hopscotch.moments.api.request.HSMomentPhotoRequest;
 import in.hopscotch.moments.api.response.UploadHSMomentPhotoInfo;
+import in.hopscotch.moments.api.response.UploadImagePageResponse;
 import in.hopscotch.moments.api.response.UploadInfo;
 import in.hopscotch.moments.converter.DTO2BOConverter;
 import in.hopscotch.moments.entity.HSMomentsData;
@@ -29,7 +31,7 @@ public class UploadHSMomentsPhotoController {
     @Inject
     ImageLibraryServiceHelper imageLibraryServiceHelper;
     @Inject
-    DTO2BOConverter  DTO2BOConverter;
+    DTO2BOConverter DTO2BOConverter;
     @Inject
     HSMomentsService hsMomentsService;
     @Inject
@@ -50,20 +52,18 @@ public class UploadHSMomentsPhotoController {
         }
         return uploadHSMomentPhotoInfo;
     }
-    
+
     @RequestMapping(value = "/uploadMomentsPhotoData", method = RequestMethod.POST)
     public String uploadMomentsPhotoData(@RequestBody HSMomentPhotoRequest hsMomentPhotoRequest) {
-        HSMomentsData hsMomentsData =  DTO2BOConverter.convertHSMomentPhotoRequestTOHSMomentsData(hsMomentPhotoRequest);
+        HSMomentsData hsMomentsData = DTO2BOConverter.convertHSMomentPhotoRequestTOHSMomentsData(hsMomentPhotoRequest);
         hsMomentsService.saveHSMomentsData(hsMomentsData);
-        
+
         return "success";
     }
-    
-    @RequestMapping(value = "/uploadMomentsPhoto", method = RequestMethod.GET)
-    public UploadInfo getUploadImagePage(HttpServletResponse response) {
-        
-        return null;
-        //return uploadHSMomentsPhotosService.uploadImageFile(request, response);
+
+    @RequestMapping(value = "/getUploadImagePageProductAndKidData", method = RequestMethod.GET)
+    public UploadImagePageResponse getUploadImagePageProductAndKidData() {
+        return uploadHSMomentsPhotosService.getUploadPageInfo(cookieContext.getCookie(CookieConstants.LOGGED_UUID));
     }
 
 }
