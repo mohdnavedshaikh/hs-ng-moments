@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import in.hopscotch.moments.repository.ImageLibraryRepository;
 import in.hopscotch.moments.service.ImageLibraryService;
 
 @Service
+@Transactional
 public class ImageLibraryServiceImpl implements ImageLibraryService {
 
     @Inject

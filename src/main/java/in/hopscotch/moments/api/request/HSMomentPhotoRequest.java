@@ -2,7 +2,6 @@ package in.hopscotch.moments.api.request;
 
 import java.io.Serializable;
 
-
 public class HSMomentPhotoRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -13,9 +12,9 @@ public class HSMomentPhotoRequest implements Serializable {
 
     private String taggedProductIds;
 
-    private String taggedKidIds;
-
     private String taggedKidNames;
+    
+    private String customerUUID;
 
     public String getImageId() {
         return imageId;
@@ -49,4 +48,12 @@ public class HSMomentPhotoRequest implements Serializable {
         this.taggedKidNames = taggedKidNames;
     }
 
+    public String getCustomerUUID() {
+        return customerUUID;
+    }
+
+    public void setCustomerUUID(String customerUUID) {
+        this.customerUUID = customerUUID;
+    }
+    
 }

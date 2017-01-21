@@ -18,6 +18,7 @@ import in.hopscotch.moments.service.HSMomentsPageService;
 import in.hopscotch.moments.service.HSMomentsService;
 
 @Service
+@Transactional
 public class HSMomentsPageServiceImpl implements HSMomentsPageService {
 
     @Inject

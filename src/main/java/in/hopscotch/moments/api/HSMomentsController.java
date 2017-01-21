@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import in.hopscotch.moments.api.response.HSMomentsResponse;
+import in.hopscotch.moments.api.response.IncrementLikeResponse;
 import in.hopscotch.moments.service.HSMomentsPageService;
 import in.hopscotch.moments.service.HSMomentsService;
 
@@ -27,15 +28,24 @@ public class HSMomentsController {
         return hsMomentsPageService.getHSMomentsPageData(true, null == pageNo ? 1 : pageNo, null == pageSize ? 20 : pageSize);
     }
 
-    @RequestMapping(value = "/getPopularHSMomentsPageData", method = RequestMethod.GET)
-    @ResponseBody
-    public HSMomentsResponse getPopularHSMomentsPageData(@RequestParam(value = "pageNo", required = false) Integer pageNo, @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        return hsMomentsPageService.getHSMomentsPageData(false, null == pageNo ? 1 : pageNo, null == pageSize ? 20 : pageSize);
-    }
+    /*
+     * @RequestMapping(value = "/getPopularHSMomentsPageData", method =
+     * RequestMethod.GET)
+     * 
+     * @ResponseBody public HSMomentsResponse
+     * getPopularHSMomentsPageData(@RequestParam(value = "pageNo", required =
+     * false) Integer pageNo, @RequestParam(value = "pageSize", required =
+     * false) Integer pageSize) { return
+     * hsMomentsPageService.getHSMomentsPageData(false, null == pageNo ? 1 :
+     * pageNo, null == pageSize ? 20 : pageSize); }
+     */
 
     @RequestMapping(value = "/incrementLike", method = RequestMethod.POST)
-    public void incrementLike(@RequestParam(value = "momentsPhotoId", required = true) Long momentsPhotoId) {
+    public IncrementLikeResponse incrementLike(@RequestParam(value = "momentsPhotoId", required = true) Long momentsPhotoId) {
         hsMomentsService.incrementLike(momentsPhotoId);
+        IncrementLikeResponse incrementLikeResponse = new IncrementLikeResponse();
+        incrementLikeResponse.setStatus("success");
+        return incrementLikeResponse;
     }
 
 }
