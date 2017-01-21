@@ -47,7 +47,7 @@ public class InstagramController {
     }
     
     @RequestMapping(value = "/generateAccessToken", method = RequestMethod.POST)
-    public void getInstagramAutheticationUrl(@RequestParam String code) {
+    public void getInstagramAutheticationUrl(@RequestParam String uuId, @RequestParam String code) {
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL("https://api.instagram.com/oauth/access_token").openConnection();
             connection.setRequestMethod("POST");
@@ -70,7 +70,6 @@ public class InstagramController {
                 String output = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
                 InstagramAccessTokenResponse response = JSON.fromJSON(InstagramAccessTokenResponse.class, output);
                 String accessToken =  response.getAccessToken();
-                String uuId = cookieContext.getCookie(CookieConstants.LOGGED_UUID);
                 instagramService.insertOrUpdateAccessToken(uuId, accessToken);
             }
         } catch (MalformedURLException e) {
