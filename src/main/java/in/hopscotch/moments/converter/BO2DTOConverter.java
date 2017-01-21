@@ -13,6 +13,7 @@ import in.hopscotch.moments.api.response.ContestWinnerInfo;
 import in.hopscotch.moments.api.response.MomentsPhoto;
 import in.hopscotch.moments.entity.ContestWinner;
 import in.hopscotch.moments.entity.HSMomentsData;
+import in.hopscotch.moments.helper.ImageLibraryInfo;
 import in.hopscotch.moments.helper.ImageLibraryServiceHelper;
 
 @Component
@@ -29,10 +30,13 @@ public class BO2DTOConverter {
         hsMomentsDatas.forEach(mdata -> {
             MomentsPhoto mp = new MomentsPhoto();
             mp.setMomentsPhotoId(mdata.getId());
-            mp.setImageURL(!StringUtils.isEmpty(mdata.getHsImageURL()) ? imageLibraryHelper.getImageCDNUrl(true, mdata.getHsImageURL()) : mdata.getInstagramImageURL());
+            ImageLibraryInfo imageLibraryInfo = imageLibraryHelper.getImageLibraryInfo(true, mdata.getHsImageURL());
+            mp.setImageURL(imageLibraryInfo.getImageURL());
             mp.setLikes(mdata.getLikes());
             mp.setTitle(mdata.getTitle());
             mp.setName(!StringUtils.isEmpty(mdata.getTaggedKidNames()) ? mdata.getTaggedKidNames() : mdata.getCustomerName());
+            mp.setWidth(imageLibraryInfo.getWidth());
+            mp.setHeight(imageLibraryInfo.getHeight());
             momentsPhotos.add(mp);
         });
         return momentsPhotos;

@@ -112,7 +112,7 @@ public class UploadHSMomentsPhotosServiceImpl implements UploadHSMomentsPhotosSe
     }
 
     public boolean validateImageFile(String contentType) {
-        for (String ct : new String[] { "image/jpeg", "image/pjpeg", "image/x-png", "image/png" }) {
+        for (String ct : new String[] { "image/jpg", "image/jpeg", "image/pjpeg", "image/x-png", "image/png" }) {
             if (contentType.equalsIgnoreCase(ct.trim())) {
                 return true;
             }

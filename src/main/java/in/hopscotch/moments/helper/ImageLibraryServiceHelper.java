@@ -30,6 +30,19 @@ public class ImageLibraryServiceHelper {
         return builder.toString();
     }
 
+    public ImageLibraryInfo getImageLibraryInfo(boolean isFromHSMoments, String imageId) {
+        ImageLibrary library = imageLibraryService.getImageLibrary(isFromHSMoments, imageId);
+        ImageLibraryInfo imageLibraryInfo = new ImageLibraryInfo();
+        if (null != library) {
+            StringBuilder builder = new StringBuilder();
+            String imageURL = builder.append("https://").append(fileDns).append("/fstatic").append(library.getImagePath() + "?version=" + library.getVersion()).toString();
+            imageLibraryInfo.setImageURL(imageURL);
+            imageLibraryInfo.setWidth(Integer.parseInt(library.getLargeSize().split(",")[0]));
+            imageLibraryInfo.setHeight(Integer.parseInt(library.getLargeSize().split(",")[1]));
+        }
+        return imageLibraryInfo;
+    }
+
     public Map<String, String> getMapOfImageIdAndImageCDNUrl(boolean isFromHSMoments, List<String> imageIds) {
         Map<String, String> mapOfImageIdAndImageCDNUrl = new HashMap<String, String>();
         Map<String, ImageLibrary> mapOfImageIdAndImageLib = imageLibraryService.getImageLibraryMap(isFromHSMoments, imageIds);

@@ -20,15 +20,15 @@ public class ShopThisLookProductRepositoryImpl implements ShopThisLookProductRep
     @Inject
     JDBCAccess jdbcAcces;
 
-    private final String GET_SHOP_THIS_PRODUCT_INFO = "select pi.product_id, p.product_name, p.image_id, p.status , p.rack_status " + " sum(case when pi.is_presale = 0 then vi.available_quantity"
-            + " when pi.is_presale = 0 then vi.presale_available_quantity end) as inv from products.product p" + " join products.productitem pi on p.id = pi.product_id"
+    private final String GET_SHOP_THIS_PRODUCT_INFO = "select pi.product_id, p.product_name, p.image_id, p.status , p.rack_status,  ifnull(sum(case when pi.is_presale = 0 then vi.available_quantity"
+            + " when pi.is_presale = 0 then vi.presale_available_quantity end), 0) as inv from products.product p" + " join products.productitem pi on p.id = pi.product_id"
             + " join products.productitemrack pir on pi.sku = pir.sku" + " join products.virtualinventory vi on vi.product_item_rack_id = pir.id" + " where p.id in ($PRODUCTID$) group by p.id";
 
     @Override
     public List<ShopThisProductHelperEntity> getShopThisProductHelperEntities(String productIds) {
         List<ShopThisProductHelperEntity> shopThisProductHelperEntities = new ArrayList<ShopThisProductHelperEntity>();
-        GET_SHOP_THIS_PRODUCT_INFO.replace("$PRODUCTID$", productIds);
-        shopThisProductHelperEntities = jdbcAcces.find(GET_SHOP_THIS_PRODUCT_INFO, new RowMapper<ShopThisProductHelperEntity>() {
+        String query = GET_SHOP_THIS_PRODUCT_INFO.replace("$PRODUCTID$", productIds);
+        shopThisProductHelperEntities = jdbcAcces.find(query, new RowMapper<ShopThisProductHelperEntity>() {
 
             @Override
             public ShopThisProductHelperEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
